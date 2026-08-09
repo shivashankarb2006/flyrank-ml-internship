@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Opportunity Scoring</title>
+
+```
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.7;
+        max-width: 1000px;
+        margin: auto;
+        padding: 40px 20px;
+        color: #222;
+        background: #f7f7f7;
+    }
+
+    main {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+    }
+
+    h1 {
+        font-size: 38px;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        margin-top: 40px;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 8px;
+    }
+
+    .abstract {
+        background: #f0f4f8;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .card {
+        background: #fafafa;
+        padding: 20px;
+        margin: 15px 0;
+        border-radius: 8px;
+    }
+
+    img {
+        max-width: 100%;
+        margin-top: 15px;
+        border-radius: 8px;
+    }
+
+    code {
+        background: #eee;
+        padding: 3px 6px;
+        border-radius: 4px;
+    }
+
+    footer {
+        margin-top: 50px;
+        padding-top: 20px;
+        border-top: 1px solid #ddd;
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<main>
+
+<h1>Content Opportunity Scoring</h1>
+
+<p><strong>FlyRank ML Internship Capstone</strong></p>
+
+<div class="abstract">
+
+<h2>Abstract</h2>
+
+<p>
+This study investigates which content pages show observed signals of
+search-performance decline and how those signals can support prioritization
+for human review. Using the pseudonymized FlyRank ML Internship content
+dataset, I constructed content-level performance features and defined a
+binary decline label based on a 20% reduction in impressions between two
+30-day periods. A Random Forest classifier with 200 trees was evaluated
+against a majority-class baseline using a client-grouped train/test split.
+The final workflow produces a ranked review queue with reason codes to
+support practical content prioritization. These results are directional
+decision-support evidence and should not be interpreted as causal proof or
+as a prediction of Google's ranking algorithm.
+</p>
+
+</div>
+
+<h2>1. Introduction / Problem Statement</h2>
+
+<p>
+Content teams may have many pages competing for limited optimization
+resources. A practical challenge is deciding which pages should receive
+attention first rather than reviewing every page equally.
+</p>
+
+<p>
+This capstone addresses that prioritization problem using historical
+search-performance and content signals from the FlyRank ML Internship
+dataset. The objective is to identify pages showing stronger observed
+signals of decline or opportunity and convert those signals into a ranked
+review queue.
+</p>
+
+<p>
+The decision supported by this analysis is which content pages should be
+reviewed first for possible optimization. The output is intended to support
+human investigation rather than automatically edit content.
+</p>
+
+<h2>2. Research Question</h2>
+
+<div class="card">
+
+<p>
+<strong>
+Which content pages show the strongest observed signals of
+search-performance decline or opportunity, and how can these signals
+support prioritization of pages for human review?
+</strong>
+</p>
+
+</div>
+
+<h2>3. Data</h2>
+
+<p>
+This project uses the pseudonymized FlyRank ML Internship content dataset.
+The analysis uses a 30,000-row content-level sample containing 44 columns.
+</p>
+
+<p>
+The available signals include historical impressions, clicks, sessions,
+search volume, CTR, average position, engagement rate, content age,
+freshness information, and trend information.
+</p>
+
+<p>
+The analysis compares a previous 30-day impression period with a subsequent
+30-day outcome period. Private client names, domains, raw private queries,
+credentials, and restricted exports are excluded from the public analysis.
+</p>
+
+<h2>4. Methodology</h2>
+
+<h3>Target</h3>
+
+<p>
+A page is labelled as <code>is_declining = 1</code> when impressions in the
+outcome 30-day period are below 80% of impressions in the previous 30-day
+period.
+</p>
+
+<h3>Features</h3>
+
+<ul>
+    <li>Previous 30-day impressions</li>
+    <li>Search volume</li>
+    <li>CTR</li>
+    <li>Average position</li>
+    <li>Engagement rate</li>
+    <li>Days since last update</li>
+    <li>Content age</li>
+</ul>
+
+<h3>Model</h3>
+
+<p>
+A Random Forest classifier with 200 trees was used.
+</p>
+
+<h3>Baseline</h3>
+
+<p>
+The baseline always predicts the majority class in the training data.
+</p>
+
+<h3>Validation</h3>
+
+<p>
+A client-grouped train/test split was used so observations from the same
+client were kept together during validation.
+</p>
+
+<h3>Leakage Control</h3>
+
+<p>
+The outcome-period impression value used to construct the decline label was
+not used as a model feature.
+</p>
+
+<h2>5. Results</h2>
+
+<p>
+The Random Forest was compared with the majority-class baseline using the
+same client-grouped test set. Accuracy, Precision, Recall, and F1 were used
+as evaluation metrics.
+</p>
+
+<p>
+The measured values from the notebook should be used when interpreting the
+model performance. The result represents performance on this historical
+sample and should not be treated as a guarantee of future performance.
+</p>
+
+<img src="outputs/charts/model_vs_baseline.png"
+  alt="Random Forest versus majority-class baseline">
+
+<h2>6. Limitations & Honest Framing</h2>
+
+<ul>
+    <li>
+        The decline label is a proxy for search-performance decline and does
+        not prove that a page needs optimization.
+    </li>
+
+```
+<li>
+    The analysis is based on historical observations and search
+    conditions can change.
+</li>
+
+<li>
+    The model identifies statistical patterns but does not establish
+    causality.
+</li>
+
+<li>
+    The model does not predict Google's ranking algorithm.
+</li>
+
+<li>
+    Recommendations are directional decision-support outputs and should
+    be reviewed by a human.
+</li>
+```
+
+</ul>
+
+<h2>7. Ranked Recommendations</h2>
+
+<p>
+The final workflow creates a ranked review queue. Pages with stronger
+observed decline signals receive higher priority for human investigation.
+</p>
+
+<div class="card">
+
+<h3>Priority 1 — Review and Refresh</h3>
+
+<p>
+<strong>Reason code:</strong> <code>DECLINING_TRAFFIC</code>
+</p>
+
+<p>
+Pages showing substantial observed impression decline should receive human
+review first.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Priority 2 — Review Search Opportunity</h3>
+
+<p>
+<strong>Reason code:</strong> <code>LOW_SEARCH_DEMAND</code>
+</p>
+
+<p>
+Pages with lower observed search demand can be investigated for their
+potential search opportunity and relevance.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Priority 3 — Review Click Performance</h3>
+
+<p>
+<strong>Reason code:</strong> <code>LOW_CTR</code>
+</p>
+
+<p>
+Pages with lower observed CTR can be reviewed for possible title,
+description, or search-result presentation opportunities.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Monitor</h3>
+
+<p>
+Pages without a strong opportunity signal can remain in a monitoring group
+rather than receiving immediate optimization work.
+</p>
+
+</div>
+
+<h2>8. Reproducibility</h2>
+
+<p>
+The analysis was developed using Python, pandas, NumPy, scikit-learn, and
+matplotlib. The main workflow is contained in the capstone notebook under
+<code>work/notebooks/</code>.
+</p>
+
+<p>
+Generated charts and recommendation tables are stored under
+<code>work/outputs/</code>.
+</p>
+
+<p>
+The public repository contains the analysis workflow and public-safe
+artifacts without exposing private client information, credentials, or
+restricted raw data.
+</p>
+
+<h2>9. Acknowledgments & Data Credit</h2>
+
+<p>
+Built on the FlyRank ML Internship dataset.
+</p>
+
+<p>
+Data and internship context provided by
+<a href="https://flyrank.ai" target="_blank">FlyRank</a>.
+</p>
+
+<footer>
+
+<p><strong>Capstone Project — Content Opportunity Scoring</strong></p>
+
+<p>
+This research paper presents directional, observed evidence for
+content-prioritization decision support.
+</p>
+
+</footer>
+
+</main>
+
+</body>
+</html>
