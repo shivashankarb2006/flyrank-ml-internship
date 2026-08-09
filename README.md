@@ -1,3 +1,69 @@
+# FlyRank ML Internship — Content Opportunity Scoring
+
+## Capstone Project
+
+This repository contains my work for the FlyRank ML Internship, including the weekly assignments and final capstone project.
+
+### Capstone: Content Opportunity Scoring
+
+**Research Question**
+
+Which content pages show the strongest observed signals of search-performance decline or opportunity, and how can these signals support prioritization of pages for human review?
+
+### What I Built
+
+I developed a content-prioritization workflow using anonymized FlyRank search-performance data.
+
+The workflow:
+
+- Builds content-level features from historical search-performance and query-level signals
+- Defines an observed decline label using changes in 30-day impressions
+- Trains a Random Forest classifier
+- Compares the model with a simple baseline
+- Uses client-grouped validation
+- Produces a ranked recommendation queue
+- Assigns explainable reason codes for human review
+
+### Final Output
+
+The model is used as **decision support**, not as an automatic content optimization system.
+
+The ranked output helps identify pages that may deserve:
+
+1. **Review and refresh** — substantial observed impression decline
+2. **Query coverage review** — limited visible query coverage
+3. **Content scope review** — high query concentration
+4. **Monitoring** — no strong immediate opportunity signal
+
+### Research Paper
+
+**Live paper:**  
+https://shivashankarb2006.github.io/flyrank-ml-internship/
+
+### Repository Structure
+
+```text
+work/
+└── notebooks/
+    ├── w01_research_question.ipynb
+    ├── w02_ml_task_framing.ipynb
+    ├── w03_data_contract.ipynb
+    ├── w03_feature_leakage_check.ipynb
+    ├── w04_signal_audit.ipynb
+    ├── w04_baseline_score.ipynb
+    ├── w05_model.ipynb
+    ├── w06_validation_audit.ipynb
+    ├── w07_action_playbook.ipynb
+    └── capstone.ipynb
+
+outputs/
+├── charts/
+│   └── model_vs_baseline.png
+├── ranked_recommendations.csv
+└── recommendation_summary.csv
+
+submission/
+└── paper_url.txt
 # FlyRank ML Internship — Starter Repo
 
 **Applied Search Intelligence: Google Search Ranking & Discoverability**
